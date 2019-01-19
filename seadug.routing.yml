@@ -1,0 +1,7 @@
+seadug.settings:
+  path: '/admin/config/system/seadug'
+  defaults:
+    _form: '\Drupal\seadug\Form\SeadugSettingsForm'
+    _title: 'SeaDUG settings'
+  requirements:
+    _permission: 'administer seadug settings'

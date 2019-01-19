@@ -1,0 +1,4 @@
+name: 'SeaDUG'
+type: module
+description: 'A demo module for SeaDUG.'
+core: 8.x

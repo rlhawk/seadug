@@ -1,0 +1,62 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations and global functions for SeaDUG module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeTypeInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form_field_config_edit_form.
+ */
+function seadug_form_field_config_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
+  $config_entity = $form_object->getEntity();
+
+  // This is not necessary in this particular case, because the Field
+  // Configuration Edit form defines the 'third_party_settings' element
+  // and sets '#tree' to be TRUE, but no other forms in Drupal do, so
+  // if you intend to take advantage of Drupal's built-in handling
+  // of third party settings, you should play it safe and explicitly
+  // set '#tree' to TRUE.
+  $form['third_party_settings']['#tree'] = TRUE;
+
+  // Add a form element to enable integration with SeaDUG.
+  $form['third_party_settings']['seadug']['enable_seadug'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable SeaDUG integration'),
+    '#description' => t('Check to enable integration with SeaDUG for this field.'),
+    '#default_value' => $config_entity->getThirdPartySetting('seadug', 'enable_seadug'),
+  ];
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node_type_form.
+ */
+function seadug_form_node_type_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_object = $form_state->getFormObject();
+  $config_entity = $form_object->getEntity();
+
+  $form['display']['display_seadug'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Display SeaDUG information'),
+    '#description' => t('Information about how terrific SeaDUG is will be displayed.'),
+    '#default_value' => $config_entity->getThirdPartySetting('seadug', 'display_seadug'),
+  ];
+
+  $form['#entity_builders'][] = 'seadug_node_type_entity_builder';
+}
+
+/**
+ * Entity form builder for the node type form.
+ */
+function seadug_node_type_entity_builder($entity_type, NodeTypeInterface $node_type, &$form, FormStateInterface $form_state) {
+  if ($form_state->getValue('display_seadug') === 1) {
+    $node_type->setThirdPartySetting('seadug', 'display_seadug', 1);
+  }
+  else {
+    $node_type->unsetThirdPartySetting('seadug', 'display_seadug');
+  }
+}

@@ -1,0 +1,5 @@
+seadug.settings:
+  title: 'SeaDUG settings'
+  description: 'Configure SeaDUG functionality.'
+  route_name: seadug.settings
+  parent: 'system.admin_config_system'

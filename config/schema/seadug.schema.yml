@@ -1,0 +1,31 @@
+seadug.settings:
+  type: config_object
+  mapping:
+    url:
+      type: string
+      label: 'URL'
+    date:
+      type: string
+      label: 'Date'
+    size:
+      type: string
+      label: 'Size'
+    enable:
+      type: boolean
+      label: 'Enable by default'
+
+node.type.*.third_party.seadug:
+  type: mapping
+  label: 'SeaDUG content type settings'
+  mapping:
+    display_seadug:
+      type: boolean
+      label: 'Display SeaDUG information'
+
+field.field.*.*.*.third_party.seadug:
+  type: mapping
+  label: 'SeaDUG field settings'
+  mapping:
+    enable_seadug:
+      type: boolean
+      label: 'Enable SeaDUG integration'
